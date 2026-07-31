@@ -14,10 +14,21 @@
         <span class="icon">&#9990;</span>
         Reserve via WhatsApp
       </a>
-      <button class="menu-toggle" @click="menuOpen = !menuOpen">
+      <button class="menu-toggle" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen" aria-label="Menú">
         <span></span><span></span><span></span>
       </button>
     </div>
+
+    <!-- Menú móvil desplegable -->
+    <nav class="mobile-nav" :class="{ active: menuOpen }">
+      <a href="#" class="mobile-nav-link" :class="{ active: activeView === 'inicio' }" @click.prevent="activeView = 'inicio'; menuOpen = false">Inicio</a>
+      <a href="#" class="mobile-nav-link" :class="{ active: activeView === 'conocenos' }" @click.prevent="activeView = 'conocenos'; menuOpen = false">Conócenos</a>
+      <a href="#" class="mobile-nav-link" :class="{ active: activeView === 'contactanos' }" @click.prevent="activeView = 'contactanos'; menuOpen = false">Contáctanos</a>
+      <a href="#" class="mobile-nav-link btn-whatsapp-mobile">
+        <span class="icon">&#9990;</span>
+        Reserve via WhatsApp
+      </a>
+    </nav>
   </header>
 </template>
 
@@ -131,6 +142,50 @@ const activeView = inject('activeView')
   border-radius: 2px;
   transition: 0.3s;
 }
+/* Menú móvil */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background: rgba(254, 250, 231, 0.97);
+  border-top: 1px solid var(--outline-variant);
+  padding: 12px 24px 20px;
+  gap: 4px;
+}
+.mobile-nav.active {
+  display: flex;
+}
+.mobile-nav-link {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--outline-variant);
+  transition: color 0.2s;
+}
+.mobile-nav-link:last-child {
+  border-bottom: none;
+}
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  color: var(--primary);
+}
+.btn-whatsapp-mobile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  background: var(--primary);
+  color: white !important;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  justify-content: center;
+  font-weight: 700;
+}
+.btn-whatsapp-mobile .icon {
+  font-size: 18px;
+}
+
 @media (max-width: 768px) {
   .nav,
   .btn-whatsapp-nav {
@@ -139,6 +194,16 @@ const activeView = inject('activeView')
   .menu-toggle {
     display: flex;
     margin-left: auto;
+  }
+  /* Animación X al abrir */
+  .menu-toggle.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .menu-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
   }
 }
 </style>
